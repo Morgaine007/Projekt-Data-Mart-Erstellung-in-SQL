@@ -14,7 +14,7 @@ Die Buchtausch-App ist eine Plattform, die es Benutzer ermöglicht, Bücher in i
 ## Datenbankstruktur
 Die Datenbank besteht aus 21 Tabellen, die wie folgt strukturiert sind:
 
-**`adresse`**: Dies ist eine Beziehungstabelle, die die Tabellen `land`, `ort`, `benutzende` und `address` miteinander verknüpft.
+**`adresse`**: Dies ist eine Beziehungstabelle, die die Tabellen `land`, `ort` und `benutzende` miteinander verknüpft.
 
 **`ausleihdauer`**: Diese Tabelle speichert die Ausleihdauer in Tagen.
 
@@ -22,23 +22,23 @@ Die Datenbank besteht aus 21 Tabellen, die wie folgt strukturiert sind:
 
 **`autor`**: In dieser Tabelle werden die Autoren gespeichert.
 
-**`autoren_schreiben_bücher`**: Dies ist eine Beziehungstabelle, in der die Tabelle `autor` und `buchtitel`miteinander verknüft werden.
+**`autoren_schreiben_bücher`**: Dies ist eine Beziehungstabelle, in der die Tabelle `autor` und `buchtitel` miteinander verknüft werden.
 
-**`benutzende`**: In dieser Tabelle werden Benutzerspezifische Daten wir Name oder Passwort gespeichert.
+**`benutzende`**: In dieser Tabelle werden benutzerspezifische Daten wie Name, Emailadresse und Passwort gespeichert.
 
-**`benutzende_haben_benutzerrollen`**:
+**`benutzende_haben_benutzerrollen`**: Dies ist eine Beziehungstabelle, in der die Tabelle `benutzende` und `benutzerrolle` miteinander verknüft werden.
 
-**`benutzer_versandoptionen`**:
+**`benutzer_versandoptionen`**: Dies ist eine Beziehungstabelle, in der die Tabelle `benutzende` und `versandoptionen` miteinander verknüft werden.
 
-**`benutzer_zeitslots`**:
+**`benutzer_zeitslots`**: Dies ist eine Beziehungstabelle, in der die Tabelle `benutzende` und `zeitslots` miteinander verknüft werden.
 
-**`benutzerrolle`**: Diese Tabelle speichert die Art er Benutzerrolle ab.
+**`benutzerrolle`**: Diese Tabelle speichert alle möglichen Benutzerrollen.
 
-**`bewertung`**: In dieser Tabelle werden die Bewertung gespeichert.
+**`bewertung`**: Dies ist eine Beziehungstabelle, in der die Tabelle `buchtitel` und `benutzende` miteinander verknüft werden.
 
-**`buchexemplar`**: Diese Tabelle verwaltet wieviele Exempleare von einem Buchtitel vorhanden sind.
+**`buchexemplar`**: Dies ist eine Beziehungstabelle, in der die Tabelle `buchtitel`, `benutzende` und `zustand`  miteinander verknüft werden.
 
-**`buchtitel`**: In dieser Tabelle werden alle Buchtitel, die entliehen werden können gespeichert.
+**`buchtitel`**: Dies ist eine Beziehungstabelle, in der die Tabelle `buchtitel` und `verlag`  miteinander verknüft werden.
 
 **`bücher_gehörenzu_genre`**
 
@@ -56,4 +56,10 @@ Die Datenbank besteht aus 21 Tabellen, die wie folgt strukturiert sind:
 
 **`zustand`**:
 
+Hinweis: Folgende Ausrücke werden Synonym für Benutzende im Bereich der Fremdschlüsselverknüpfung verwendet: Leser, User, Nutzer
 
+
+## Installation 
+
+1. **Voraussetzungen**:
+   - MariaDB, mySQL oder eine ähnliche relationale Datenbank
