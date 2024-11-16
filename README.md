@@ -11,6 +11,10 @@ Die Buchtausch-App ist eine Plattform, die es Benutzer ermöglicht, Bücher in i
 - Ausleihmanagement: Koordination von Ausleih- und Rückgabeprozessen
 - Bewertungsmanagement: Benutzer können die Bücher und Ausleihvorgänge bewerten
 
+## ERM-Modell
+![grafik](https://github.com/user-attachments/assets/16929df5-4373-486c-b72f-2253516eaa83)
+
+
 ## Datenbankstruktur
 Die Datenbank besteht aus 21 Tabellen, die wie folgt strukturiert sind:
 
@@ -65,7 +69,7 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
 ## Installation 
 
 1. **Voraussetzungen**:
-   - mySQL oder eine ähnliche relationale Datenbank
+   - mySQL
   
 2. **Schritt-für-Schritt-Anleitung**
    - Klone das Repository:
