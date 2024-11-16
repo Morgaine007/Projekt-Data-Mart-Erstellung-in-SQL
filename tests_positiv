@@ -1,4 +1,6 @@
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `bewertung_user` 
+-- Zeigt welche Benutzer welchen Buchtitel bewertet haben:
+
+CREATE VIEW `bewertung_user` 
 AS select `benutzende`.`Vorname` 
 AS `Vorname`,`benutzende`.`Nachname` AS `Nachname`,`bewertung`.`BuchNameID` 
 AS `BuchID`,`buchtitel`.`TitelName` 
@@ -7,7 +9,9 @@ AS `Bewertung`
 from ((`benutzende` join `bewertung` on((`benutzende`.`BenutzerID` = `bewertung`.`LeserID`))) join `buchtitel` on((`buchtitel`.`BuchID` = `bewertung`.`BuchNameID`)));
 
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `wer_hat_was_ausgeliehen` 
+-- Zeigt welche Benutzer welchen Buchtitel wann ausgeliehen und wann zurückgegeben hat sowie den Zustand des Buches:
+
+CREATE VIEW `wer_hat_was_ausgeliehen` 
 AS select `benutzende`.`Vorname` 
 AS `Vorname`,`benutzende`.`Nachname`
 AS `Nachname`,`buchtitel`.`TitelName` 
@@ -17,5 +21,23 @@ AS `Rückgabedatum`,`zustand`.`ZustandName`
 AS `Zustand` from ((((`zustand` join `buchexemplar` on((`zustand`.`ZustandID` = `buchexemplar`.`ZustandID`))) 
 join `buchtitel` on((`buchtitel`.`BuchID` = `buchexemplar`.`BuchID`))) join `ausleihe` on((`ausleihe`.`ExemplarID` = `buchexemplar`.`ExemplarID`))) 
 join `benutzende` on((`benutzende`.`BenutzerID` = `ausleihe`.`AusleiherID`)));
+
+
+-- Einfügen eines neuen Benutzers mit allen notwendigen und gültigen Informationen.
+
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) 
+VALUES ('11', 'Maria', 'Bokelberg', 'Maria.Bokelberg@gmail.com', 'ZuliD159+', '0456112398');
+
+-- Löschen von Benutzerdaten
+
+Delete from benutzende where BenutzerID=11;
+
+-- Änderung von Benutzerdaten
+
+Update benutzende set Telefonnummer = '0176-12578901' where BenutzerId = 6;
+
+-- Änderung von Bewertungen
+
+Update bewertung set Bewertungstext = 'kann ich nicht empfehlen' where BewertungsID = 2;
 
 
