@@ -1,0 +1,467 @@
+CREATE SCHEMA `büchertausch_app` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci;
+
+CREATE TABLE `ausleihdauer` (
+  `DauerID` int NOT NULL,
+  `DauerInTagen` int NOT NULL,
+  PRIMARY KEY (`DauerID`)
+);
+
+CREATE TABLE `autor` (
+  `AutorID` int NOT NULL,
+  `Vorname` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `Nachname` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`AutorID`)
+);
+
+CREATE TABLE `benutzende` (
+  `BenutzerID` int NOT NULL,
+  `Vorname` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  `Nachname` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  `Emailadresse` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  `Passwort` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  `Telefonnummer` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  PRIMARY KEY (`BenutzerID`),
+  UNIQUE KEY `Emailadresse_UNIQUE` (`Emailadresse`),
+  UNIQUE KEY `Passwort_UNIQUE` (`Passwort`)
+);
+
+CREATE TABLE `benutzerrolle` (
+  `RolleID` int NOT NULL,
+  `RollenName` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`RolleID`)
+);
+
+CREATE TABLE `genre` (
+  `GenreID` int NOT NULL,
+  `GenreName` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  PRIMARY KEY (`GenreID`)
+);
+
+CREATE TABLE `land` (
+  `LandID` int NOT NULL,
+  `LandName` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`LandID`)
+);
+
+CREATE TABLE `ort` (
+  `OrtID` int NOT NULL,
+  `PLZ` varchar(20) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `Stadt` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`OrtID`)
+);
+
+CREATE TABLE `verlag` (
+  `VerlagID` int NOT NULL,
+  `VerlagName` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`VerlagID`)
+);
+
+CREATE TABLE `versandoptionen` (
+  `VersandID` int NOT NULL,
+  `Beschreibung` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`VersandID`)
+);
+
+
+CREATE TABLE `zeitslots` (
+  `ZeitslotID` int NOT NULL,
+  `Wochentag` text COLLATE utf8mb4_german2_ci,
+  `Starzeit` time DEFAULT NULL,
+  `Endzeit` time DEFAULT NULL,
+  PRIMARY KEY (`ZeitslotID`)
+);
+
+CREATE TABLE `zustand` (
+  `ZustandID` int NOT NULL,
+  `ZustandName` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
+  `ZustandsBeschreibung` varchar(500) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`ZustandID`)
+);
+
+CREATE TABLE `adresse` (
+  `AdresseID` int NOT NULL,
+  `LandID` int NOT NULL,
+  `OrtID` int DEFAULT NULL,
+  `BenutzerID` int NOT NULL,
+  `Strasse` varchar(45) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  PRIMARY KEY (`AdresseID`),
+  KEY `LandID_idx` (`LandID`),
+  KEY `OrtID_idx` (`OrtID`),
+  KEY `BenutzerID_idx` (`BenutzerID`),
+  CONSTRAINT `BenutzerID` FOREIGN KEY (`BenutzerID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `LandID` FOREIGN KEY (`LandID`) REFERENCES `land` (`LandID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OrtID` FOREIGN KEY (`OrtID`) REFERENCES `ort` (`OrtID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `ausleihe` (
+  `AusleiheID` int NOT NULL,
+  `Ausleihdatum` date DEFAULT NULL,
+  `Rückgabedatum` date DEFAULT NULL,
+  `AusleiherID` int DEFAULT NULL,
+  `ExemplarID` int DEFAULT NULL,
+  PRIMARY KEY (`AusleiheID`),
+  KEY `ExemplarID_idx` (`ExemplarID`),
+  KEY `AusleiherID_idx` (`AusleiherID`),
+  CONSTRAINT `ausleiherID` FOREIGN KEY (`AusleiherID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ExemplarID` FOREIGN KEY (`ExemplarID`) REFERENCES `buchexemplar` (`ExemplarID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `autoren_schreiben_bücher` (
+  `AutorenBuecherID` int NOT NULL,
+  `AutorID` int NOT NULL,
+  `BuchtitelID` int NOT NULL,
+  PRIMARY KEY (`AutorenBuecherID`),
+  KEY `BuchtitelID_idx` (`BuchtitelID`),
+  KEY `AutorID_idx` (`AutorID`),
+  CONSTRAINT `AutorID` FOREIGN KEY (`AutorID`) REFERENCES `autor` (`AutorID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `BuchtitelID` FOREIGN KEY (`BuchtitelID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `benutzende_haben_benutzerrollen` (
+  `idbenutzende_benutzerrollenID` int NOT NULL,
+  `BenutzendeID` int NOT NULL,
+  `RolleID` int NOT NULL,
+  PRIMARY KEY (`idbenutzende_benutzerrollenID`),
+  KEY `BenutzerID_idx` (`BenutzendeID`),
+  KEY `RolleID_idx` (`RolleID`),
+  CONSTRAINT `BenutzendeID` FOREIGN KEY (`BenutzendeID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `RolleID` FOREIGN KEY (`RolleID`) REFERENCES `benutzerrolle` (`RolleID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `benutzer_versandoptionen` (
+  `benutzer_Versandoptionen` int NOT NULL,
+  `UserID` int DEFAULT NULL,
+  `VersandID` int DEFAULT NULL,
+  PRIMARY KEY (`benutzer_Versandoptionen`),
+  KEY `UserID_idx` (`UserID`),
+  KEY `VersandID_idx` (`VersandID`),
+  CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `VersandID` FOREIGN KEY (`VersandID`) REFERENCES `versandoptionen` (`VersandID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `benutzer_zeitslot` (
+  `Benutzer_ZeitSlotID` int NOT NULL,
+  `AnbieterID` int DEFAULT NULL,
+  `ZeitslotID` int DEFAULT NULL,
+  PRIMARY KEY (`Benutzer_ZeitSlotID`),
+  KEY `BenutzerID_idx` (`AnbieterID`),
+  KEY `Zeitslot_idx` (`ZeitslotID`),
+  CONSTRAINT `AnbieterID` FOREIGN KEY (`AnbieterID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Zeitslot` FOREIGN KEY (`ZeitslotID`) REFERENCES `zeitslots` (`ZeitslotID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `bewertung` (
+  `BewertungsID` int NOT NULL,
+  `Bewertungstext` text COLLATE utf8mb4_german2_ci,
+  `Bewertungspunktzahl` int DEFAULT NULL,
+  `Bewertungsdatum` date DEFAULT NULL,
+  `LeserID` int DEFAULT NULL,
+  `BuchNameID` int DEFAULT NULL,
+  PRIMARY KEY (`BewertungsID`),
+  KEY `BuchNameID_idx` (`BuchNameID`) /*!80000 INVISIBLE */,
+  KEY `LeserID_idx` (`LeserID`),
+  CONSTRAINT `BuchName` FOREIGN KEY (`BuchNameID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `LeserID` FOREIGN KEY (`LeserID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `buchexemplar` (
+  `ExemplarID` int NOT NULL,
+  `BuchID` int DEFAULT NULL,
+  `NutzerID` int DEFAULT NULL,
+  `ZustandID` int DEFAULT NULL,
+  PRIMARY KEY (`ExemplarID`),
+  KEY `BuchlD_idx` (`BuchID`),
+  KEY `NutzerID_idx` (`NutzerID`),
+  KEY `ZustandID_idx` (`ZustandID`),
+  CONSTRAINT `BuchID` FOREIGN KEY (`BuchID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `NutzerID` FOREIGN KEY (`NutzerID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ZustandID` FOREIGN KEY (`ZustandID`) REFERENCES `zustand` (`ZustandID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `buchtitel` (
+  `BuchID` int NOT NULL,
+  `TitelName` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
+  `ISBN` varchar(20) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `JahrDerVeroeffentlichung` year NOT NULL,
+  `VerlagID` int DEFAULT NULL,
+  PRIMARY KEY (`BuchID`),
+  KEY `VerlagID_idx` (`VerlagID`),
+  CONSTRAINT `VerlagID` FOREIGN KEY (`VerlagID`) REFERENCES `verlag` (`VerlagID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `bücher_gehörenzu_genre` (
+  `Buecher_Genre_ID` int NOT NULL,
+  `BuchtitelID` int NOT NULL,
+  `GenreID` int NOT NULL,
+  PRIMARY KEY (`Buecher_Genre_ID`),
+  KEY `BuchtitelD_idx` (`BuchtitelID`),
+  KEY `GenreID_idx` (`GenreID`),
+  CONSTRAINT `BuchtitelD` FOREIGN KEY (`BuchtitelID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `GenreID` FOREIGN KEY (`GenreID`) REFERENCES `genre` (`GenreID`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('1', '1', '1', '1', 'Achterwiek 12'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('2', '1', '1', '2', 'Auf dem Wieksberg 25'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('3', '1', '1', '3', 'Auf dem Wieksberg 3'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('4', '1', '1', '4', 'Wieksbergstr. 4'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('5', '1', '1', '5', 'Wieksbergstr. 28'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('6', '1', '2', '7', 'Eutiner Str. 25'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('7', '1', '4', '8', 'Rostocker Str. 72'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('8', '1', '5', '9', 'Kieler Str. 104'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('9', '1', '6', '10', 'Rungestr. 7'),
+INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('10', '1', '1', '6', 'Achterwiek 12');
+
+
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('1', '7'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('2', '14'),
+INSERT INTO `büchertausch_app`.` ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('3', '21'),
+INSERT INTO `büchertausch_app`.` ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('4', '28'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('5', '35'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('6', '42'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('7', '49'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('8', '56'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('9', '63'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('10', '70');
+
+	
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('1', 'buch wie neu, hat mir gut gefallen', '5', '2024-07-05', '3', '1'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('2', 'schwierig zu lesen', '1', '2024-04-18', '7', '2'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('3', 'Top. Sehr guter Zustand', '5', '2024-06-02', '10', '3'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('4', 'ganz tolles Buch. Kann ich jedem empfehlen', '5', '2024-05-24', '8', '4'),
+ISERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('5', 'gut geschrieben, aber nicht mein Thema', '3', '2024-02-10', '9', '5'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('6', 'gutes Buch, exemplar hat einen kaputten Buchrücken', '5', '2024-02-05', '1', '6'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('7', 'Immer wieder schön', '5', '2024-04-03', '3', '7'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('8', 'war ganz ok', '3', '2024-03-30', '4', '7'),
+INSERT INTO `büchertausch_app`.`bewertung` (`BewertungsID`, `Bewertungstext`, `Bewertungspunkzahl`, `Bewertungsdatum`, `LeserID`, `BuchNameID`) VALUES ('9', 'Lohnt sich.', '5', '2024-05-22', '5', '7');
+
+
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('1', ' 1', '1','1'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('2', ' 1', '7','4'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('3', ' 2', '2','3'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('4', ' 3', '3','2'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('5', ' 4', '4','2'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('6', ' 5', '5','1'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('7', ' 6', '6','7'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('8', ' 7', '7','8'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('9', ' 7', '8','6'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('10', ' 7', '2','5'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('11', ' 8', '9','4'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('12', ' 9', '10','2'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('13', ' 10', '5','1'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('14', ' 11', '3','1'),
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) VALUES ('15', ' 12', '10','3'),
+
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('1', ' Der Insasse', '978-3426281536','2018','1'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('2', ' Unterwerfung', '978-3832163594','2019','2'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('3', ' Der Bücherdrache', '978-3328107118','2021','3'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('4', ' Das Café am Rande der Welt', '978-3423209694','2007','4'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('5', ' Views', '978-3550202995','2024','5'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('6', ' Die Säulen der Erde', '978-3404178124','2019','6'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('7', ' Harry Potter und der Gefangene von Askaban', '978-3551557438','2018','7'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('8', ' Harry Potter und der Stein der Weisen', '978-3551354013','2005','7'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('9', ' Tintenherz', '978-3791504650','2003','8'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('10', ' Der Medicus', '978-3453471092','2011','9'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('11', ' Der Zauberberg', '978-3596294336','1991','10'),
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('12', ' Magic Park – Das Geheimnis der Greifen', '?978-3423717632','2018','4');
+
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('1', 'Krimi'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('2', 'Fantasy'),
+INSERT INTO `büchertausch_app`.` genre` (`GenreID`, `GenreName`) VALUES ('3', 'Roman'),
+INSERT INTO `büchertausch_app`.` genre` (`GenreID`, `GenreName`) VALUES ('4', 'Horror'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('5', 'Historischer Roman'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('6', 'Esoterik'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('7', 'Thriller'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('8', 'Bildungsroman'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('9', 'Biographie'),
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('10', 'Märchen');
+
+
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('1','1', '1'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('2','1', '7'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('3','2', '3'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('4','3', '3'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('5','4', '6'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('6','5', '7'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('7','5', '3'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('8','6', '5'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('9','7', '2'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('10','8', '2'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('11','9', '2'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('12','10', '1'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('13','5', '1'),
+INSERT INTO `büchertausch_app`.`bücher_gehörenzu_genre` (`Buecher_Genre_ID`, `BuchtitelID`,  `GenreID`) VALUES ('14','6', '1');
+
+
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('1', 'Sebastian', 'Fitzek'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('', 'Michel', 'Houellebecq'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('3', 'Walter', 'Moers'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('4', 'John', 'Strelecky'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('5', 'Marc-Uwe', 'Kling'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('6', 'Ken', 'Follett'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('7', 'Joanne K.', 'Rowling'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('8', 'Cornelia', 'Funke'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('9', 'Noah', 'Gordon'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('10', 'Thomas', 'Mann'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('11', 'Kari', 'Sutherland'),
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES ('12', 'Tui T.', 'Sutherland');
+
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('1', 'Mittwoch', '15:00', '18:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('2', 'Samstag', '10:00', '12:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('3', 'Sonntag', '15:00', '17:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('4', 'Montag', '18:00', '19:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('5', 'Dienstag', '18:00', '20:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('6', 'Donnerstag', '20:00', '22:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('7', 'Freitag', '15:00', '17:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('8', 'Samstag', '12:00', '13:30'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('9', 'Sonntag', '13:00', '15:00'),
+INSERT INTO `büchertausch_app`.`zeitslots` (`ZeitslotID`, `Wochentag`, `Starzeit`, `Endzeit`) VALUES ('10', 'Freitag', '12:00', '14:00');
+
+
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('1', '1', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('2', '2', '4'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('3', '3', '2'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('4', '4', '6'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('5', '5', '3'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('6', '6', '5'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('7', '7', '9'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('8', '8', '8'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('9', '9', '10'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('10', '10', '7'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('11', '1', '9'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('12', '3', '7'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('13', '7', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('14', '2', '7'),
+INSERT INTO `büchertausch_app`.`benutzer_zeitslot` (`Benutzer_ZeitslotID`, `AnbieterID`, `ZeitslotID`) VALUES ('15', '5', '6');
+
+
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('1', 'D', '23730', 'Neustadt'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('2', 'D', '24143', 'Kiel'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('3', 'D', '24105', 'Kiel'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('5', 'D', '10553', 'Berlin'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('7', 'D', '22525', 'Hamburg'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`, `PLZ`, `Ort`) VALUES ('8', 'D', '18055', 'Rostock'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('9', 'D', '28201', 'Bremen'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('10', 'D', '23966', 'Wismar'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('10', 'D', '50739', 'Köln'),
+INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('12', 'D', '26605', 'Aurich');
+
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('1', 'Administrator'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('2', 'Moderator'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('3', 'Anbieter'),
+INSERT INTO `büchertausch_app`.` benutzerrolle` (`RolleID`, `RollenName`) VALUES ('4', 'Nutzer'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('5', 'Suchender'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('6', 'Rezensent'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('7', 'Sammler'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('8', 'Bibliothekar'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('9', 'Tester'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('10', 'Organisator');
+
+
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('1', 'Deutschland'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('2', 'Dänemark'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('3', 'Niederlande'),
+INSERT INTO `büchertausch_app`.` land` (`LandID`, `LandName`) VALUES ('4', 'Belgien'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('5', 'Österreich'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('6', 'Schweiz'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('7', 'Luxemburg'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('8', 'Polen'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('9', 'Ungarn'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('10', 'Rumänien');
+
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('1', 'Droemer Knaur'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('2', 'DuMont Buchverlag'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('3', 'Penguin Verlag'),
+INSERT INTO `büchertausch_app`.` verlag` (`VerlagID`, `VerlagName`) VALUES ('4', 'dtv'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('5', 'Ullstein Hardcover'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('6', 'Lübbe'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('7', 'Carlsen'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('8', 'Dressler'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('9', 'Heyne Verlag'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('10', 'S. Fischer Verlag');
+
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('1', 'Abholung vor Ort'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('2', 'Posteinwurf durch Besitzer'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('3', 'Kurierdienst'),
+INSERT INTO `büchertausch_app`.` versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('4', 'Same-Day Lieferung'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('5', 'Paketstation'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('6', 'Über- Nacht Zustellung'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('7', 'Express Lieferung'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('8', 'Standardversand'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('9', 'Abholung Paketshop'),
+INSERT INTO `büchertausch_app`.`versandoptionen` (`VersandID`, `Beschreibung`) VALUES ('10', 'Hinterlegung am Haus');
+
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('1', 'Neu', 'Das Buch ist im Perfekten Zustand, original aus der Buchhandlung'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('', 'Wie Neu', 'Das Buch sieht aus wie neu, hat aber vielleicht minimale Gebrauchsspuren.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('3', 'Sehr gut', 'Das Buch sieht aus wie neu, hat aber vielleicht minimale Gebrauchsspuren.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('4', 'Gut', 'Sichtbare Gebrauchsspuren, aber alle Seiten sind intakt und lesbar.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('5', 'Akzeptabel', 'Deutliche Gebrauchsspuren, eventuell Eselsohren oder Notizen, aber immer noch lesbar.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('6', 'Gebraucht', 'Deutliche Gebrauchsspuren, möglicherweise beschriftet oder beklebt.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('7', 'Beschädigt', 'Stark abgenutzt, möglicherweise Seiten oder Umschlag beschädigt.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('8', 'Verfärbt', 'Seiten oder Umschlag sind durch Sonnenlicht oder andere Einflüsse verfärbt.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('9', 'Markiert', 'nthält Markierungen oder Unterstreichungen im Text.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('10', 'Sammlerzustand', 'Spezieller Zustand für Sammler, oft unberührt und in perfektem Zustand, manchmal eingeschweißt oder mit Originalverpackung.');
+
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('1', 1', '1'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('2', 2', '2'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('3', 3', '3'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('4', 4', '4'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('5', 5', '5'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('6', 6', '6'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('7', 7', '7'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('8', 7', '8'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('9', 8', '9'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('10', 9', '10'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('11', 10', '11'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('12', 11', '12'),
+INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('13', 12', '12');
+
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('1', 'Ingrid', 'Müller', 'Ingrid.Mueller@gmail.com', 'HaGLR98d', '0456112345'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('2', 'Thomas', 'König', 'Koenig@hotmail.com', '721KzWV6', '0456112470'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('3', 'Simone', 'Meier', 'S.Meier1974@web.de', 'y3Dcz51w', '0456112595'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('4', 'Abigail', 'Tönnjes', 'HeyAbigail@gmx.de', 'RgonRuXh', '0456112720'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('5', 'Daniel', 'Markus', 'Daniel_Markus555@gmail.com', 'q17btJZ1', '0456112845'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('6', 'Lisa', 'Peterson', 'Lisa_Peterson@t-online.de', 'TdZ8o557', '0456112970'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('7', 'Kevin', 'Siebrecht', 'Kevsi@gmail.com', 'xLH4QH42', ''0431113595'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('8', 'Ali', 'Akmen', 'AliAkmen1987@yahoo.de', '68pLTRk0', ''0301137205'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('9', 'Sina', 'Brose', 'Brose@hotmail.com', '5lOpkT00', ''04045113845'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('10', 'Hanna', 'Klein', 'KleineHanna@gmail.com', 'THURSZo9', ''0381113970');
+
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('1', '1', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('2', '1', '4'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('3', '2', '4'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('4', '3', '9'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('5', '10', '1'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('6', '10', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('7', '7', '4'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('8', '8', '4'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('9', '5', '4'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('10', '4', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('11', '6', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('12', '9', '4'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('13', '2', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('14', '3', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('15', '5', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('16', '4', '9'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('17', '7', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('18', '8', '3'),
+INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('19', '9', '3');
+
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('1', '1', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('2', '2', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('3', '3', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('4', '4', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('5', '5', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('6', '6', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('7', '7', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('8', '8', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('9', '9', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('10', '10', '1'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('11', '1', '2'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('12', '2', '2'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('13', '4', '2'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('14', '2', '3'),
+INSERT INTO `büchertausch_app`.`benutzer_versandoptionen` (`benutzer_Versandoptionen`, `UserID`,  `VersandID`) VALUES ('15', '10', '10');
+
+
+
