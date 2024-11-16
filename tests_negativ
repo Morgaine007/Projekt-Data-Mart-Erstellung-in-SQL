@@ -29,8 +29,8 @@ INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUE
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) 
 VALUES ('9', 'Sina', 'Brose', '5lOpkT00', '04045113845');
 
--- Einfügen von Daten, die die maximale Zeichenlänge überschreiten.
+-- Einfügen von Daten, die die maximale Zeichenlänge überschreiten:
 
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`)
 VALUES ('25', 'Tom', 'Simon', 'Simon@hotmail.com', 
-'9UH573nVx64VnVW4x9ci7rC5gQh92uZyqLjMM7E64LtW975pJpcTtx9D9UH573nVx64VnVW4x9ci7rC5gQh92uZyqLjMM7E64LtW975pJpcTtx9D', '045611247259')
+'9UH573nVx64VnVW4x9ci7rC5gQh92uZyqLjMM7E64LtW975pJpcTtx9D9UH573nVx64VnVW4x9ci7rC5gQh92uZyqLjMM7E64LtW975pJpcTtx9D', '045611247259');
