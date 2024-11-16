@@ -19,8 +19,3 @@ join `buchtitel` on((`buchtitel`.`BuchID` = `buchexemplar`.`BuchID`))) join `aus
 join `benutzende` on((`benutzende`.`BenutzerID` = `ausleihe`.`AusleiherID`)));
 
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `zustand_buch` 
-AS select `zustand`.`ZustandName` 
-AS `Zustand`,`buchtitel`.`TitelName` 
-AS `Buchtitel` from ((`zustand` join `buchexemplar` on((`zustand`.`ZustandID` = `buchexemplar`.`ZustandID`))) 
-join `buchtitel` on((`buchtitel`.`BuchID` = `buchexemplar`.`BuchID`)));
