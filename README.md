@@ -32,7 +32,7 @@ Die Datenbank besteht aus 21 Tabellen, die wie folgt strukturiert sind:
 
 **`benutzer_zeitslots`**: Dies ist eine Beziehungstabelle, in der die Tabelle `benutzende` und `zeitslots` miteinander verknüft werden.
 
-**`benutzerrolle`**: Diese Tabelle speichert alle möglichen Benutzerrollen.
+**`benutzerrolle`**: Diese Tabelle speichert die möglichen Benutzerrollen.
 
 **`bewertung`**: Dies ist eine Beziehungstabelle, in der die Tabelle `buchtitel` und `benutzende` miteinander verknüft werden.
 
@@ -40,24 +40,27 @@ Die Datenbank besteht aus 21 Tabellen, die wie folgt strukturiert sind:
 
 **`buchtitel`**: Dies ist eine Beziehungstabelle, in der die Tabelle `buchtitel` und `verlag`  miteinander verknüft werden.
 
-**`bücher_gehörenzu_genre`**
+**`bücher_gehörenzu_genre`**: Dies ist eine Beziehungstabelle, in der die Tabelle `buchtitel` und `genre`  miteinander verknüft werden.
 
-**`genre`**: Diese Tabelle verwaltet die Genres.
+**`genre`**: Diese Tabelle verwaltet die Genres, die Bücher zugeordnet werden können.
 
 **`land`**: In dieser Tabelle werden die Länder gespeichert.
 
-**`ort`**: In dieser Tabelle werden die Wohorte der Benutzenden gespeichert.
+**`ort`**: In dieser Tabelle werden die Wohnorte der Benutzenden gespeichert.
 
-**`verlag`**: Diese Tabelle speichert die Verlaghäuser.
+**`verlag`**: Diese Tabelle speichert die Verlagshäuser.
 
-**`versandoptionen`**:
+**`versandoptionen`**: Diese Tabelle speichert die möglichen Versandoptionen.
 
-**`zeitslots`**:
+**`zeitslots`**: Diese Tabelle speichert die möglichen Zeitslots, in denen Bücher bei Usern abgeholt werden können.
 
-**`zustand`**:
+**`zustand`**: Diese Tabelle speichert die möglichen Zuständer der Bücher inkl. Beschreibung.
 
-Hinweis: Folgende Ausrücke werden Synonym für Benutzende im Bereich der Fremdschlüsselverknüpfung verwendet: Leser, User, Nutzer
+Hinweis: Folgende Ausrücke werden Synonym für `benutzende` im Bereich der Fremdschlüsselverknüpfung verwendet:
+![grafik](https://github.com/user-attachments/assets/bfcb35b9-1845-4419-be05-9fcf9c4ba1af)
 
+Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremdschlüsselverknüpfung verwendet:
+![grafik](https://github.com/user-attachments/assets/5a69430a-df03-4fd5-a23a-256c9b7adea3)
 
 ## Installation 
 
