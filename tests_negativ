@@ -1,0 +1,36 @@
+-- Versuch, Datensätze mit ungültigen Fremdschlüsselwerten einzufügen, die auf nicht existierende Einträge verweisen.
+
+INSERT INTO `büchertausch_app`.`ausleihe` (`AusleiheID`, `Ausleihdatum`, `Rückgabedatum`, `AusleiherID`, `ExemplarID`) 
+VALUES ('11', '2024-04-02', '202-04-29', '3', '1596');
+
+INSERT INTO `büchertausch_app`.`buchexemplar` (`ExemplarID`, `BuchID`, `NutzerID`, `ZustandID`) 
+VALUES ('12', ' 2559', '10','2');
+
+-- Versuch, Datensätze mit identischen Primärschlüsselwerten einzufügen.
+
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('25', '49');
+
+INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('105', 'Thriller');
+
+-- Einfügen von Daten, die eine eindeutige Einschränkung verletzen, z. B. E-Mail-Adresse oder auch Passwort darf es nicht nochmal geben.
+
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) 
+VALUES ('25', 'Ingrid', 'Müller', 'Ingrid.Mueller@gmail.com', 'HaGLR98d', '0456112345');
+
+-- Einfügen von Daten in falschen Formaten:
+
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) 
+VALUES ('12', ' Magic Park – Das Geheimnis der Greifen', '978-3423717632','2018-05-05','4');
+
+-- Versuch, NULL-Werte in Felder einzufügen, die NOT NULL-Constraints haben:
+
+INSERT INTO `büchertausch_app`.`autor` (`AutorID`, `Vorname`, `Nachname`) VALUES (NULL, 'Sophie', 'Passmann');
+
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) 
+VALUES ('9', 'Sina', 'Brose', '5lOpkT00', '04045113845');
+
+-- Einfügen von Daten, die die maximale Zeichenlänge überschreiten.
+
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`)
+VALUES ('25', 'Tom', 'Simon', 'Simon@hotmail.com', 
+'9UH573nVx64VnVW4x9ci7rC5gQh92uZyqLjMM7E64LtW975pJpcTtx9D9UH573nVx64VnVW4x9ci7rC5gQh92uZyqLjMM7E64LtW975pJpcTtx9D', '045611247259')
