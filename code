@@ -225,8 +225,8 @@ INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `Benu
 
 INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('1', '7'),
 INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('2', '14'),
-INSERT INTO `büchertausch_app`.` ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('3', '21'),
-INSERT INTO `büchertausch_app`.` ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('4', '28'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('3', '21'),
+INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('4', '28'),
 INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('5', '35'),
 INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('6', '42'),
 INSERT INTO `büchertausch_app`.`ausleihdauer` (`Dauer_ID`, `DauerInTagen`) VALUES ('7', '49'),
@@ -371,7 +371,7 @@ INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES
 INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('1', 'Deutschland'),
 INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('2', 'Dänemark'),
 INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('3', 'Niederlande'),
-INSERT INTO `büchertausch_app`.` land` (`LandID`, `LandName`) VALUES ('4', 'Belgien'),
+INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('4', 'Belgien'),
 INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('5', 'Österreich'),
 INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('6', 'Schweiz'),
 INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('7', 'Luxemburg'),
@@ -382,7 +382,7 @@ INSERT INTO `büchertausch_app`.`land` (`LandID`, `LandName`) VALUES ('10', 'Rum
 INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('1', 'Droemer Knaur'),
 INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('2', 'DuMont Buchverlag'),
 INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('3', 'Penguin Verlag'),
-INSERT INTO `büchertausch_app`.` verlag` (`VerlagID`, `VerlagName`) VALUES ('4', 'dtv'),
+INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('4', 'dtv'),
 INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('5', 'Ullstein Hardcover'),
 INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('6', 'Lübbe'),
 INSERT INTO `büchertausch_app`.`verlag` (`VerlagID`, `VerlagName`) VALUES ('7', 'Carlsen'),
@@ -409,7 +409,7 @@ INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `Zustands
 INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('6', 'Gebraucht', 'Deutliche Gebrauchsspuren, möglicherweise beschriftet oder beklebt.'),
 INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('7', 'Beschädigt', 'Stark abgenutzt, möglicherweise Seiten oder Umschlag beschädigt.'),
 INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('8', 'Verfärbt', 'Seiten oder Umschlag sind durch Sonnenlicht oder andere Einflüsse verfärbt.'),
-INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('9', 'Markiert', 'nthält Markierungen oder Unterstreichungen im Text.'),
+INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('9', 'Markiert', 'enthält Markierungen oder Unterstreichungen im Text.'),
 INSERT INTO `büchertausch_app`.`zustand` (`ZustandID`, `ZustandName`, `ZustandsBeschreibung`) VALUES ('10', 'Sammlerzustand', 'Spezieller Zustand für Sammler, oft unberührt und in perfektem Zustand, manchmal eingeschweißt oder mit Originalverpackung.');
 
 INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('1', 1', '1'),
