@@ -81,14 +81,14 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
 ## Verwendung
 
 1. **Erstellen und Initialisieren der Datenbank**:
-   - Führe das `code.sql`-Skript aus, um die Datenbank zu erstellen und die Tabellen zu initialisieren.
+   - Führe das `code_erstellungdb_einfuegen_von_Beispieldaten.sql`-Skript aus, um die Datenbank zu erstellen und die Tabellen zu initialisieren.
 
 2. **Durchführen von Abfragen**:
    - Du kannst Abfragen wie folgt ausführen:
      ```sql
      SELECT * FROM book WHERE availability = 1;
      ```
-   - Weitere Abfragen findest du in der Datei `test.sql`.
+   - Weitere Abfragen findest du in der Datei `tests.sql`.
 
 3. **Hinzufügen und Bearbeiten von Daten**:
    - Füge Daten über SQL-INSERT-Befehle hinzu oder aktualisiere bestehende Datensätze mit SQL-UPDATE-Befehlen.
