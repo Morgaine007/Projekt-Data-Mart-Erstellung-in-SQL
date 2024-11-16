@@ -1,9 +1,10 @@
-CREATE SCHEMA `büchertausch_app` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci;
+CREATE SCHEMA `büchertausch_app`;
 
 CREATE TABLE `ausleihdauer` (
   `DauerID` int NOT NULL,
   `DauerInTagen` int NOT NULL,
-  PRIMARY KEY (`DauerID`)
+  PRIMARY KEY (`DauerID`),
+  UNIQUE KEY `DauerInTagen_UNIQUE` (`DauerInTagen`)
 );
 
 CREATE TABLE `autor` (
@@ -28,38 +29,44 @@ CREATE TABLE `benutzende` (
 CREATE TABLE `benutzerrolle` (
   `RolleID` int NOT NULL,
   `RollenName` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  PRIMARY KEY (`RolleID`)
+  PRIMARY KEY (`RolleID`),
+  UNIQUE KEY `RollenName_UNIQUE` (`RollenName`)
 );
 
 CREATE TABLE `genre` (
   `GenreID` int NOT NULL,
   `GenreName` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
-  PRIMARY KEY (`GenreID`)
+  PRIMARY KEY (`GenreID`),
+  UNIQUE KEY `GenreName_UNIQUE` (`GenreName`)
 );
 
 CREATE TABLE `land` (
   `LandID` int NOT NULL,
   `LandName` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  PRIMARY KEY (`LandID`)
+  PRIMARY KEY (`LandID`),
+  UNIQUE KEY `LandName_UNIQUE` (`LandName`)
 );
 
 CREATE TABLE `ort` (
   `OrtID` int NOT NULL,
   `PLZ` varchar(20) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `Stadt` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  PRIMARY KEY (`OrtID`)
+  PRIMARY KEY (`OrtID`),
+  UNIQUE KEY `PLZ_UNIQUE` (`PLZ`)
 );
 
 CREATE TABLE `verlag` (
   `VerlagID` int NOT NULL,
   `VerlagName` varchar(100) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  PRIMARY KEY (`VerlagID`)
+  PRIMARY KEY (`VerlagID`),
+  UNIQUE KEY `VerlagName_UNIQUE` (`VerlagName`)
 );
 
 CREATE TABLE `versandoptionen` (
   `VersandID` int NOT NULL,
   `Beschreibung` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  PRIMARY KEY (`VersandID`)
+  PRIMARY KEY (`VersandID`),
+  UNIQUE KEY `Beschreibung_UNIQUE` (`Beschreibung`)
 );
 
 
@@ -75,7 +82,8 @@ CREATE TABLE `zustand` (
   `ZustandID` int NOT NULL,
   `ZustandName` varchar(100) COLLATE utf8mb4_german2_ci NOT NULL,
   `ZustandsBeschreibung` varchar(500) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  PRIMARY KEY (`ZustandID`)
+  PRIMARY KEY (`ZustandID`),
+  UNIQUE KEY `ZustandsBeschreibung_UNIQUE` (`ZustandsBeschreibung`)
 );
 
 CREATE TABLE `adresse` (
@@ -185,6 +193,8 @@ CREATE TABLE `buchtitel` (
   `JahrDerVeroeffentlichung` year NOT NULL,
   `VerlagID` int DEFAULT NULL,
   PRIMARY KEY (`BuchID`),
+  UNIQUE KEY `TitelName_UNIQUE` (`TitelName`),
+  UNIQUE KEY `ISBN_UNIQUE` (`ISBN`),
   KEY `VerlagID_idx` (`VerlagID`),
   CONSTRAINT `VerlagID` FOREIGN KEY (`VerlagID`) REFERENCES `verlag` (`VerlagID`) ON DELETE CASCADE ON UPDATE CASCADE
 );
