@@ -1,0 +1,26 @@
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `bewertung_user` 
+AS select `benutzende`.`Vorname` 
+AS `Vorname`,`benutzende`.`Nachname` AS `Nachname`,`bewertung`.`BuchNameID` 
+AS `BuchID`,`buchtitel`.`TitelName` 
+AS `buchtitel`,`bewertung`.`Bewertungstext` 
+AS `Bewertung` 
+from ((`benutzende` join `bewertung` on((`benutzende`.`BenutzerID` = `bewertung`.`LeserID`))) join `buchtitel` on((`buchtitel`.`BuchID` = `bewertung`.`BuchNameID`)));
+
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `wer_hat_was_ausgeliehen` 
+AS select `benutzende`.`Vorname` 
+AS `Vorname`,`benutzende`.`Nachname`
+AS `Nachname`,`buchtitel`.`TitelName` 
+AS `Buchtitel`,`ausleihe`.`Ausleihdatum` 
+AS `Ausleihdatum`,`ausleihe`.`Rückgabedatum` 
+AS `Rückgabedatum`,`zustand`.`ZustandName` 
+AS `Zustand` from ((((`zustand` join `buchexemplar` on((`zustand`.`ZustandID` = `buchexemplar`.`ZustandID`))) 
+join `buchtitel` on((`buchtitel`.`BuchID` = `buchexemplar`.`BuchID`))) join `ausleihe` on((`ausleihe`.`ExemplarID` = `buchexemplar`.`ExemplarID`))) 
+join `benutzende` on((`benutzende`.`BenutzerID` = `ausleihe`.`AusleiherID`)));
+
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `zustand_buch` 
+AS select `zustand`.`ZustandName` 
+AS `Zustand`,`buchtitel`.`TitelName` 
+AS `Buchtitel` from ((`zustand` join `buchexemplar` on((`zustand`.`ZustandID` = `buchexemplar`.`ZustandID`))) 
+join `buchtitel` on((`buchtitel`.`BuchID` = `buchexemplar`.`BuchID`)));
