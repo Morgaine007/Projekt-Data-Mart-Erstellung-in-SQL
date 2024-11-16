@@ -273,7 +273,7 @@ INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `Jah
 INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('9', ' Tintenherz', '978-3791504650','2003','8'),
 INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('10', ' Der Medicus', '978-3453471092','2011','9'),
 INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('11', ' Der Zauberberg', '978-3596294336','1991','10'),
-INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('12', ' Magic Park – Das Geheimnis der Greifen', '?978-3423717632','2018','4');
+INSERT INTO `büchertausch_app`.`buchtitel` (`BuchID`, `TitelName`, `ISBN`, `JahrDerVeroeffentlichung` , `VerlagID`) VALUES ('12', ' Magic Park – Das Geheimnis der Greifen', '978-3423717632','2018','4');
 
 INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('1', 'Krimi'),
 INSERT INTO `büchertausch_app`.`genre` (`GenreID`, `GenreName`) VALUES ('2', 'Fantasy'),
@@ -359,7 +359,7 @@ INSERT INTO `büchertausch_app`.`ort` (`OrtID`,`PLZ`, `Ort`) VALUES ('12', 'D', 
 INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('1', 'Administrator'),
 INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('2', 'Moderator'),
 INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('3', 'Anbieter'),
-INSERT INTO `büchertausch_app`.` benutzerrolle` (`RolleID`, `RollenName`) VALUES ('4', 'Nutzer'),
+INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('4', 'Nutzer'),
 INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('5', 'Suchender'),
 INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('6', 'Rezensent'),
 INSERT INTO `büchertausch_app`.`benutzerrolle` (`RolleID`, `RollenName`) VALUES ('7', 'Sammler'),
@@ -432,10 +432,10 @@ INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachnam
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('4', 'Abigail', 'Tönnjes', 'HeyAbigail@gmx.de', 'RgonRuXh', '0456112720'),
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('5', 'Daniel', 'Markus', 'Daniel_Markus555@gmail.com', 'q17btJZ1', '0456112845'),
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('6', 'Lisa', 'Peterson', 'Lisa_Peterson@t-online.de', 'TdZ8o557', '0456112970'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('7', 'Kevin', 'Siebrecht', 'Kevsi@gmail.com', 'xLH4QH42', ''0431113595'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('8', 'Ali', 'Akmen', 'AliAkmen1987@yahoo.de', '68pLTRk0', ''0301137205'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('7', 'Kevin', 'Siebrecht', 'Kevsi@gmail.com', 'xLH4QH42', '0431113595'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('8', 'Ali', 'Akmen', 'AliAkmen1987@yahoo.de', '68pLTRk0', '0301137205'),
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('9', 'Sina', 'Brose', 'Brose@hotmail.com', '5lOpkT00', ''04045113845'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('10', 'Hanna', 'Klein', 'KleineHanna@gmail.com', 'THURSZo9', ''0381113970');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('10', 'Hanna', 'Klein', 'KleineHanna@gmail.com', 'THURSZo9', '0381113970');
 
 INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('1', '1', '3'),
 INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('2', '1', '4'),
