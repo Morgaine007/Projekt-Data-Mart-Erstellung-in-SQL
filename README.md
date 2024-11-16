@@ -76,7 +76,7 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
    - Erstelle die Datenbank und führe die SQL-Skripte in folgender Reihenfolge aus:
      1. `code.sql` – Erstellt die Tabellen und fügt einige Beispieldaten ein.
      2. `tests_positiv.sql` – Führt positive Tests zur Überprüfung der Funktionalität der Datenbank durch.
-     3. `test_negativ.sql` – Führt negative Tests zur Simulation ungültiger Eingaben und Fehler durch.
+     3. `tests_negativ.sql` – Führt negative Tests zur Simulation ungültiger Eingaben und Fehler durch.
     
 ## Verwendung
 
