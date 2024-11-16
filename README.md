@@ -66,3 +66,41 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
 
 1. **Voraussetzungen**:
    - MariaDB, mySQL oder eine ähnliche relationale Datenbank
+  
+2. **Schritt-für-Schritt-Anleitung**
+   - Klone das Repository:
+  ```bash
+     git clone https://github.com/Morgaine007/Projekt-Data-Mart-Erstellung-in-SQL.git
+  ```
+Öffne die SQL-Dateien in deinem SQL-Editor.
+   - Erstelle die Datenbank und führe die SQL-Skripte in folgender Reihenfolge aus:
+     1. `code.sql` – Erstellt die Tabellen und fügt einige Beispieldaten ein.
+     2. `test.sql` – Führt positive Tests durch, um die Funktionalität der Datenbank zu überprüfen.
+     3. `negative_test.sql` – Führt negative Tests durch, um ungültige Eingaben und Fehler zu simulieren.
+    
+## Verwendung
+
+1. **Erstellen und Initialisieren der Datenbank**:
+   - Führe das `code.sql`-Skript aus, um die Datenbank zu erstellen und die Tabellen zu initialisieren.
+
+2. **Durchführen von Abfragen**:
+   - Du kannst Abfragen wie folgt ausführen:
+     ```sql
+     SELECT * FROM book WHERE availability = 1;
+     ```
+   - Weitere Abfragen findest du in der Datei `test.sql`.
+
+3. **Hinzufügen und Bearbeiten von Daten**:
+   - Füge Daten über SQL-INSERT-Befehle hinzu oder aktualisiere bestehende Datensätze mit SQL-UPDATE-Befehlen.
+
+## Tests
+
+Das Projekt enthält zwei Arten von Tests:
+
+1. **Positive Tests**:
+   - Überprüfen, ob die grundlegenden Datenbankoperationen wie das Einfügen, Aktualisieren und Löschen ordnungsgemäß funktionieren.
+   - Diese Tests findest du in der Datei `test.sql`.
+
+2. **Negative Tests**:
+   - Überprüfen, ob die Datenbank korrekt auf ungültige Eingaben reagiert (z.B. ungültige Fremdschlüssel oder fehlende Pflichtfelder).
+   - Diese Tests findest du in der Datei `negative_test.sql`.
