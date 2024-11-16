@@ -69,18 +69,19 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
 ## Installation 
 
 1. **Voraussetzungen**:
-   - mySQL
+   - Stelle sicher, dass mySQL Workbench installiert ist.
   
-2. **Schritt-für-Schritt-Anleitung**
+3. **Schritt-für-Schritt-Anleitung**
    - Klone das Repository:
   ```bash
      git clone https://github.com/Morgaine007/Projekt-Data-Mart-Erstellung-in-SQL.git
-  ```
-Öffne die SQL-Dateien in deinem SQL-Editor.
+```
+   - Lade die Datei 'code.sql' herunter.
+   - Dann in mySQL Workbench auf File > Open SQL Script klicken und Datei 'code.sql' importieren und ausführen.
+   ![grafik](https://github.com/user-attachments/assets/48f6e01a-3a35-4c72-927d-596243009550)
    - Erstelle die Datenbank und führe die SQL-Skripte in folgender Reihenfolge aus:
-     1. `code.sql` – Erstellt die Tabellen und fügt einige Beispieldaten ein.
-     2. `tests_positiv.sql` – Führt positive Tests zur Überprüfung der Funktionalität der Datenbank durch.
-     3. `tests_negativ.sql` – Führt negative Tests zur Simulation ungültiger Eingaben und Fehler durch.
+     1. `tests_positiv.sql` – Führt positive Tests zur Überprüfung der Funktionalität der Datenbank durch.
+     2. `tests_negativ.sql` – Führt negative Tests zur Simulation ungültiger Eingaben und Fehler durch.
     
 ## Verwendung
 
