@@ -62,7 +62,7 @@ Die Datenbank besteht aus 23 Tabellen, die wie folgt strukturiert sind:
 
 **`View - bewertung_user`**: Diese Ansicht zeigt, welcher Nutzer, welchen Buchtitel wie bewertet hat. So kann sich schnell ein Überblick verschafft werden, welche Bücher beliebt und welche unbeliebt sind. Letzteres kann zum Anlass genommen werden, diese Bücher nicht mehr anzubieten.
 
-**`VIEW - wer_hat_was_ausgeliehen`**: Diese Ansicht zeigt, welcher Nutzer welchen Buchtitel von wann bis wann ausgeliehen hat. Hieraus kann abgeleitet werden, wer ein eher "langsamer" Leser ist.
+**`View - wer_hat_was_ausgeliehen`**: Diese Ansicht zeigt, welcher Nutzer welchen Buchtitel von wann bis wann ausgeliehen hat. Hieraus kann abgeleitet werden, wer ein eher "langsamer" Leser ist.
 
 Hinweis: Folgende Ausrücke werden Synonym für `benutzende` im Bereich der Fremdschlüsselverknüpfung verwendet:
 ![grafik](https://github.com/user-attachments/assets/bfcb35b9-1845-4419-be05-9fcf9c4ba1af)
