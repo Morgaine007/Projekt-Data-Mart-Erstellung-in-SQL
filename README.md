@@ -78,7 +78,7 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
 3. **Schritt-für-Schritt-Anleitung**
    - Klone das Repository:
   ```bash
-     git clone https://github.com/Morgaine007/Projekt-Data-Mart-Erstellung-in-SQL.git
+     https://github.com/Morgaine007/Projekt-Data-Mart-Erstellung-in-SQL.git
 ```
    - Lade die Datei 'code.sql' herunter.
    - Dann in mySQL Workbench auf File > Open SQL Script klicken und Datei 'code.sql' importieren und ausführen.
