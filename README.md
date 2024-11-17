@@ -74,6 +74,7 @@ Hinweis: Folgende Ausrücke werden Synonym für `buchtitel` im Bereich der Fremd
 
 1. **Voraussetzungen**:
    - Stelle sicher, dass mySQL Workbench installiert ist.
+   - Dieses Video erklärt ganz gut wie mySQL workbench zu installieren ist: https://www.youtube.com/watch?v=u96rVINbAUI
   
 3. **Schritt-für-Schritt-Anleitung**
    - Klone das Repository:
