@@ -217,7 +217,7 @@ CREATE TABLE `büchertausch_app`.`benutzer_versandoptione` (
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
-REATE TABLE `büchertausch_app`.`benutzer_zeitslot` (
+CREATE TABLE `büchertausch_app`.`benutzer_zeitslot` (
   `Benutzer_ZeitSlotID` INT ZEROFILL NOT NULL,
   `AnbieterID` INT NOT NULL,
   `ZeitslotID` INT NOT NULL,
