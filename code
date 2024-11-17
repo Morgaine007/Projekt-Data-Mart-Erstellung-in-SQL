@@ -143,8 +143,6 @@ CREATE TABLE `büchertausch_app`.`buchexemplar` (
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
-
-
 CREATE TABLE `büchertausch_app`.`ausleihe` (
   `AusleiheID` INT NOT NULL AUTO_INCREMENT,
   `Ausleihdatum` DATE NOT NULL,
@@ -165,77 +163,116 @@ CREATE TABLE `büchertausch_app`.`ausleihe` (
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
-
-CREATE TABLE `autoren_schreiben_bücher` (
-  `AutorenBuecherID` int NOT NULL,
-  `AutorID` int NOT NULL,
-  `BuchtitelID` int NOT NULL,
+CREATE TABLE `büchertausch_app`.`autoren_schreiben_bücher` (
+  `AutorenBuecherID` INT NOT NULL AUTO_INCREMENT,
+  `AutorID` INT NOT NULL,
+  `BuchtitelID` INT NOT NULL,
   PRIMARY KEY (`AutorenBuecherID`),
-  KEY `BuchtitelID_idx` (`BuchtitelID`),
-  KEY `AutorID_idx` (`AutorID`),
-  CONSTRAINT `AutorID` FOREIGN KEY (`AutorID`) REFERENCES `autor` (`AutorID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BuchtitelID` FOREIGN KEY (`BuchtitelID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE
-);
+  INDEX `AutorID_idx` (`AutorID` ASC) VISIBLE,
+  INDEX `BuchtitelID_idx` (`BuchtitelID` ASC) VISIBLE,
+  CONSTRAINT `AutorID`
+    FOREIGN KEY (`AutorID`)
+    REFERENCES `büchertausch_app`.`autor` (`AutorID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `BuchtitelID`
+    FOREIGN KEY (`BuchtitelID`)
+    REFERENCES `büchertausch_app`.`buchtitel` (`BuchID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
-CREATE TABLE `benutzende_haben_benutzerrollen` (
-  `idbenutzende_benutzerrollenID` int NOT NULL,
-  `BenutzendeID` int NOT NULL,
-  `RolleID` int NOT NULL,
+CREATE TABLE `büchertausch_app`.`benutzende_haben_benutzerrollen` (
+  `idbenutzende_benutzerrollenID` INT ZEROFILL NOT NULL,
+  `BenutzendeID` INT NOT NULL,
+  `RolleID` INT NOT NULL,
   PRIMARY KEY (`idbenutzende_benutzerrollenID`),
-  KEY `BenutzerID_idx` (`BenutzendeID`),
-  KEY `RolleID_idx` (`RolleID`),
-  CONSTRAINT `BenutzendeID` FOREIGN KEY (`BenutzendeID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `RolleID` FOREIGN KEY (`RolleID`) REFERENCES `benutzerrolle` (`RolleID`) ON DELETE CASCADE ON UPDATE CASCADE
-);
+  INDEX `BenutzendeID_idx` (`BenutzendeID` ASC) VISIBLE,
+  INDEX `RolleID_idx` (`RolleID` ASC) VISIBLE,
+  CONSTRAINT `BenutzendeID`
+    FOREIGN KEY (`BenutzendeID`)
+    REFERENCES `büchertausch_app`.`benutzende` (`BenutzerID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `RolleID`
+    FOREIGN KEY (`RolleID`)
+    REFERENCES `büchertausch_app`.`benutzerrolle` (`RolleID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
-CREATE TABLE `benutzer_versandoptionen` (
-  `benutzer_Versandoptionen` int NOT NULL,
-  `UserID` int DEFAULT NULL,
-  `VersandID` int DEFAULT NULL,
-  PRIMARY KEY (`benutzer_Versandoptionen`),
-  KEY `UserID_idx` (`UserID`),
-  KEY `VersandID_idx` (`VersandID`),
-  CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `VersandID` FOREIGN KEY (`VersandID`) REFERENCES `versandoptionen` (`VersandID`) ON DELETE CASCADE ON UPDATE CASCADE
-);
+CREATE TABLE `büchertausch_app`.`benutzer_versandoptione` (
+  `benutzer_VersandoptionenID` INT NOT NULL AUTO_INCREMENT,
+  `UserID` INT NOT NULL,
+  `VersandID` INT NOT NULL,
+  PRIMARY KEY (`benutzer_VersandoptionenID`),
+  INDEX `UserID_idx` (`UserID` ASC) VISIBLE,
+  INDEX `VersandID_idx` (`VersandID` ASC) VISIBLE,
+  CONSTRAINT `UserID`
+    FOREIGN KEY (`UserID`)
+    REFERENCES `büchertausch_app`.`benutzende` (`BenutzerID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `VersandID`
+    FOREIGN KEY (`VersandID`)
+    REFERENCES `büchertausch_app`.`versandoptionen` (`VersandID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
-CREATE TABLE `benutzer_zeitslot` (
-  `Benutzer_ZeitSlotID` int NOT NULL,
-  `AnbieterID` int DEFAULT NULL,
-  `ZeitslotID` int DEFAULT NULL,
+REATE TABLE `büchertausch_app`.`benutzer_zeitslot` (
+  `Benutzer_ZeitSlotID` INT ZEROFILL NOT NULL,
+  `AnbieterID` INT NOT NULL,
+  `ZeitslotID` INT NOT NULL,
   PRIMARY KEY (`Benutzer_ZeitSlotID`),
-  KEY `BenutzerID_idx` (`AnbieterID`),
-  KEY `Zeitslot_idx` (`ZeitslotID`),
-  CONSTRAINT `AnbieterID` FOREIGN KEY (`AnbieterID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Zeitslot` FOREIGN KEY (`ZeitslotID`) REFERENCES `zeitslots` (`ZeitslotID`) ON DELETE CASCADE ON UPDATE CASCADE
-);
+  INDEX `AnbieterID_idx` (`AnbieterID` ASC) VISIBLE,
+  INDEX `ZeitslotID_idx` (`ZeitslotID` ASC) VISIBLE,
+  CONSTRAINT `AnbieterID`
+    FOREIGN KEY (`AnbieterID`)
+    REFERENCES `büchertausch_app`.`benutzende` (`BenutzerID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `ZeitslotID`
+    FOREIGN KEY (`ZeitslotID`)
+    REFERENCES `büchertausch_app`.`zeitslots` (`ZeitslotID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
-CREATE TABLE `bewertung` (
-  `BewertungsID` int NOT NULL,
-  `Bewertungstext` text COLLATE utf8mb4_german2_ci,
-  `Bewertungspunktzahl` int DEFAULT NULL,
-  `Bewertungsdatum` date DEFAULT NULL,
-  `LeserID` int DEFAULT NULL,
-  `BuchNameID` int DEFAULT NULL,
+CREATE TABLE `büchertausch_app`.`bewertung` (
+  `BewertungsID` INT ZEROFILL NOT NULL,
+  `Bewertungstext` TEXT NOT NULL,
+  `Bewertungsdatum` DATE NOT NULL,
+  `LeserID` INT NOT NULL,
+  `BuchNameID` INT NOT NULL,
   PRIMARY KEY (`BewertungsID`),
-  KEY `BuchNameID_idx` (`BuchNameID`) /*!80000 INVISIBLE */,
-  KEY `LeserID_idx` (`LeserID`),
-  CONSTRAINT `BuchName` FOREIGN KEY (`BuchNameID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `LeserID` FOREIGN KEY (`LeserID`) REFERENCES `benutzende` (`BenutzerID`) ON DELETE CASCADE ON UPDATE CASCADE
-);
+  INDEX `BuchNameID_idx` (`BuchNameID` ASC) VISIBLE,
+  INDEX `LeserID_idx` (`LeserID` ASC) VISIBLE,
+  CONSTRAINT `BuchNameID`
+    FOREIGN KEY (`BuchNameID`)
+    REFERENCES `büchertausch_app`.`buchtitel` (`BuchID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `LeserID`
+    FOREIGN KEY (`LeserID`)
+    REFERENCES `büchertausch_app`.`benutzende` (`BenutzerID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
-CREATE TABLE `bücher_gehörenzu_genre` (
-  `Buecher_Genre_ID` int NOT NULL,
-  `BuchtitelID` int NOT NULL,
-  `GenreID` int NOT NULL,
+CREATE TABLE `büchertausch_app`.`bücher_gehörenzu_genre` (
+  `Buecher_Genre_ID` INT NOT NULL,
+  `BuchtitelID` INT NOT NULL,
+  `GenreID` INT NOT NULL,
   PRIMARY KEY (`Buecher_Genre_ID`),
-  KEY `BuchtitelD_idx` (`BuchtitelID`),
-  KEY `GenreID_idx` (`GenreID`),
-  CONSTRAINT `BuchtitelD` FOREIGN KEY (`BuchtitelID`) REFERENCES `buchtitel` (`BuchID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `GenreID` FOREIGN KEY (`GenreID`) REFERENCES `genre` (`GenreID`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
+  INDEX `BuchtitelD_idx` (`BuchtitelID` ASC) VISIBLE,
+  INDEX `GenreID_idx` (`GenreID` ASC) VISIBLE,
+  CONSTRAINT `BuchtitelD`
+    FOREIGN KEY (`BuchtitelID`)
+    REFERENCES `büchertausch_app`.`buchtitel` (`BuchID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `GenreID`
+    FOREIGN KEY (`GenreID`)
+    REFERENCES `büchertausch_app`.`genre` (`GenreID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('1', '1', '1', '1', 'Achterwiek 12'),
 INSERT INTO `büchertausch_app`.`adresse` (`AdresseID`, `LandID`, `OrtID`, `BenutzerID`, `Strasse`) VALUES ('2', '1', '1', '2', 'Auf dem Wieksberg 25'),
@@ -452,15 +489,15 @@ INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`,
 INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('12', 11', '12'),
 INSERT INTO `büchertausch_app`.`autoren_schreiben_bücher` (`AutorenBuecherID`, `AutorID`,  `BuchtitelID`) VALUES ('13', 12', '12');
 
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('1', 'Ingrid', 'Müller', 'Ingrid.Mueller@gmail.com', 'HaGLR98d', '0456112345'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('2', 'Thomas', 'König', 'Koenig@hotmail.com', '721KzWV6', '0456112470'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('3', 'Simone', 'Meier', 'S.Meier1974@web.de', 'y3Dcz51w', '0456112595'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('4', 'Abigail', 'Tönnjes', 'HeyAbigail@gmx.de', 'RgonRuXh', '0456112720'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('5', 'Daniel', 'Markus', 'Daniel_Markus555@gmail.com', 'q17btJZ1', '0456112845'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('6', 'Lisa', 'Peterson', 'Lisa_Peterson@t-online.de', 'TdZ8o557', '0456112970'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('7', 'Kevin', 'Siebrecht', 'Kevsi@gmail.com', 'xLH4QH42', '0431113595'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('8', 'Ali', 'Akmen', 'AliAkmen1987@yahoo.de', '68pLTRk0', '0301137205'),
-INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('9', 'Sina', 'Brose', 'Brose@hotmail.com', '5lOpkT00', ''04045113845'),
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('1', 'Ingrid', 'Müller', 'Ingrid.Mueller@gmail.com', 'HaGLR98d', '0456112345');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('2', 'Thomas', 'König', 'Koenig@hotmail.com', '721KzWV6', '0456112470');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('3', 'Simone', 'Meier', 'S.Meier1974@web.de', 'y3Dcz51w', '0456112595');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('4', 'Abigail', 'Tönnjes', 'HeyAbigail@gmx.de', 'RgonRuXh', '0456112720');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('5', 'Daniel', 'Markus', 'Daniel_Markus555@gmail.com', 'q17btJZ1', '0456112845');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('6', 'Lisa', 'Peterson', 'Lisa_Peterson@t-online.de', 'TdZ8o557', '0456112970');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('7', 'Kevin', 'Siebrecht', 'Kevsi@gmail.com', 'xLH4QH42', '0431113595');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('8', 'Ali', 'Akmen', 'AliAkmen1987@yahoo.de', '68pLTRk0', '0301137205');
+INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('9', 'Sina', 'Brose', 'Brose@hotmail.com', '5lOpkT00', ''04045113845');
 INSERT INTO `büchertausch_app`.`benutzende` (`BenutzerID`, `Vorname`,  `Nachname`, `Emailadresse`, `Passwort`, `Telefonnummer`) VALUES ('10', 'Hanna', 'Klein', 'KleineHanna@gmail.com', 'THURSZo9', '0381113970');
 
 INSERT INTO `büchertausch_app`.`benutzende_haben_benutzerrollen` (`idbenutzende_benutzerrollenID`, `BenutzendeID`,  `RolleID`) VALUES ('1', '1', '3'),
